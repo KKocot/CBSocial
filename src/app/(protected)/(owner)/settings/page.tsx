@@ -4,7 +4,8 @@ import UserForm from "@/components/high-role-form";
 import RolesTable from "@/components/high-role-table";
 import HouseDetailsForm from "@/components/house-details";
 import DataForm from "@/components/house-settings-table";
-import { getHouseDetails, getHouseSettings, getRoles } from "@/lib/get-data";
+import { getHouseDetails, getHouseSettings } from "@/lib/get-data";
+import { rolesQueryOptions } from "@/queries/roles.query";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
@@ -13,10 +14,9 @@ import Loading from "react-loading";
 const SettingsPage = () => {
   const t = useTranslations("SettingsPage");
   const { data: commander } = useSession();
-  const { data: rolesData, isLoading: rolesIsLoading } = useQuery({
-    queryKey: ["rolesList"],
-    queryFn: getRoles,
-  });
+  const { data: rolesData, isLoading: rolesIsLoading } = useQuery(
+    rolesQueryOptions()
+  );
   const house =
     rolesData?.find((e) => e.discordId === commander?.user.id)?.house || "";
 

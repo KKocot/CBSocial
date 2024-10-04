@@ -2,17 +2,18 @@
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
-import { useRolesContext } from "@/components/providers/globalData";
+import { useQuery } from "@tanstack/react-query";
+import { rolesQueryOptions } from "@/queries/roles.query";
 
 export default function Home() {
   const t = useTranslations("HomePage");
   const { data } = useSession();
-  const commanders = useRolesContext();
+  const { data: commanders = [] } = useQuery(rolesQueryOptions());
 
   return (
-    <main className="flex flex-col items-center justify-center px-4 md:px-6 sm:h-full my-12">
+    <main className="flex flex-col items-center justify-center px-4 md:px-6 sm:h-full ">
       <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-center">
         Conqueror&lsquo;s Blade
       </h1>
@@ -68,20 +69,7 @@ export default function Home() {
           ) : null}
         </>
       ) : (
-        <div className="mt-8 max-w-md rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-          <p className="text-gray-500 dark:text-gray-400">
-            {t("login_to_access_your_profile")}
-          </p>
-          <div className="mt-4 flex justify-center">
-            <Button
-              onClick={() =>
-                signIn("discord", { callbackURL: process.env.NEXTAUTH_URL })
-              }
-            >
-              {t("login")}
-            </Button>
-          </div>
-        </div>
+        <div>Something went wrong</div>
       )}
     </main>
   );

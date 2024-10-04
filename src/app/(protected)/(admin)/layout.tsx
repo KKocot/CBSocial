@@ -8,6 +8,7 @@ export default async function Layout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession(authOptions);
+  if (!session) redirect("/login");
 
   if (session?.user.id !== "303156898532818944") redirect("/");
   return children;

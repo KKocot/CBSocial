@@ -4,6 +4,10 @@ import { DefaultSession } from "next-auth";
 import connectMongoDB from "./mongodb";
 
 export const authOptions: AuthOptions = {
+  pages: {
+    signIn: "/login",
+    newUser: "/",
+  },
   // Configure one or more authentication providers
   providers: [
     DiscordProvider({
@@ -20,7 +24,11 @@ export const authOptions: AuthOptions = {
       }
       return token;
     },
-
+    redirect: async ({ url, baseUrl }) => {
+      return url.startsWith(baseUrl)
+        ? Promise.resolve(url)
+        : Promise.resolve(baseUrl);
+    },
     async signIn() {
       try {
         await connectMongoDB();

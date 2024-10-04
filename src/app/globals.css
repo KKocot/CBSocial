@@ -65,7 +65,7 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 215 8.2% 97.2%;
 
-    --ring: 215 82% 44%;
+    --ring: 215 82% 94%;
   }
 }
 
@@ -74,6 +74,30 @@
     @apply border-border;
   }
   body {
+    --gradient-opacity: 0.25;
     @apply bg-background text-foreground;
+    background: linear-gradient(
+      -45deg,
+      hsl(var(--primary) / var(--gradient-opacity)),
+      hsl(var(--background) / var(--gradient-opacity)),
+      hsl(var(--background) / var(--gradient-opacity)),
+      hsl(var(--primary) / var(--gradient-opacity)),
+      hsl(var(--accent) / var(--gradient-opacity))
+    );
+    background-size: 400% 400%;
+
+    animation: Gradient 15s infinite steps(75);
+  }
+}
+
+@keyframes Gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

@@ -39,6 +39,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET(request: Request) {
+  const session = await getServerSession(authOptions);
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
   try {

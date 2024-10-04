@@ -1,6 +1,6 @@
 import connectMongoDB from "@/lib/mongodb";
 import Survey from "@/models/surveys";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { headers } from "next/headers";
 import { getServerSession } from "next-auth";
@@ -12,7 +12,6 @@ export async function GET(
 ) {
   const session = await getServerSession(authOptions);
   const discordKey = headers().get("discord-key");
-
   // Allow access to all logged in users
   if (!(session || (discordKey && discordKey === process.env.BOT_KEY))) {
     return new Response("401");

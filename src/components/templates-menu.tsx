@@ -11,10 +11,11 @@ import {
 } from "./ui/select";
 import { SheetTypes } from "@/lib/type";
 import { useTranslations } from "next-intl";
-import { useRolesContext } from "./providers/globalData";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import { Survey } from "@/lib/get-data";
+import { useQuery } from "@tanstack/react-query";
+import { rolesQueryOptions } from "../queries/roles.query";
 
 const TemplateMenu = ({
   userHouse,
@@ -28,7 +29,8 @@ const TemplateMenu = ({
   players: Survey[];
 }) => {
   const user = useSession();
-  const roles = useRolesContext();
+  const { data: roles = [] } = useQuery(rolesQueryOptions());
+
   const highestRole = roles
     .filter((e) => e.role === "HouseLeader" || e.role === "RightHand")
     .some((e) => e.discordId === user.data?.user?.id);
@@ -87,7 +89,7 @@ const TemplateMenu = ({
   };
   useEffect(() => {
     fetchTemplate(userHouse);
-  }, []);
+  }, [userHouse]);
 
   return (
     <div className="flex justify-center items-center gap-4 bg-indigo-950 p-1">

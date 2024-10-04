@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Unit } from "./type";
+import { useTranslations } from "next-intl";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -41,10 +42,11 @@ export function getCloserDay() {
   return nextTuesday < nextSaturday ? nextTuesday : nextSaturday;
 }
 
-export function getArtyAmount(
-  amount: "none" | "some" | "average" | "aLot" | undefined,
-  t: (key: string) => string
+export function useArtyAmount(
+  amount: "none" | "some" | "average" | "aLot" | undefined
 ) {
+  const t = useTranslations("BuildTeam");
+
   switch (amount) {
     case "none":
       return { title: t("no_artillery"), label: t("not_at_all") };

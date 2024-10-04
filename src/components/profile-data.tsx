@@ -38,7 +38,11 @@ const ProfileData = ({ profile }: { profile: Survey }) => {
               className="flex flex-col items-center w-18"
               title={t("leadership") + ": " + e.matchingWeapon.leadership}
             >
-              <img src={e.src} className="rounded-full w-12 h-12" />
+              <img
+                src={e.src}
+                alt={e.name}
+                className="rounded-full w-12 h-12"
+              />
               <span
                 className={clsx("text-sm", {
                   "text-yellow-600": e.matchingWeapon.pref === 1,

@@ -5,11 +5,7 @@ export interface Roles {
   role: string;
   discordNick: string;
 }
-export const getRoles = async (): Promise<Roles[]> => {
-  const response = await fetch("/api/roles");
-  const result = await response.json();
-  return result.roles;
-};
+
 export const getRoleById = async (id: string): Promise<Roles> => {
   const response = await fetch(`/api/roles?id=${id}`);
   const result = await response.json();

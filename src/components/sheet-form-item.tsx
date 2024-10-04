@@ -2,7 +2,7 @@ import { ArtilleryProps, SheetTypes, Unit, WeaponsTypes } from "@/lib/type";
 import { Autocompleter } from "./autocompleter";
 import { Textarea } from "./ui/textarea";
 import { useEffect, useMemo, useState } from "react";
-import { getArtyAmount } from "@/lib/utils";
+import { useArtyAmount } from "@/lib/utils";
 import { PackageOpen } from "lucide-react";
 import clsx from "clsx";
 import { Button } from "./ui/button";
@@ -15,6 +15,11 @@ import {
 } from "@/components/ui/accordion";
 import { useTranslations } from "next-intl";
 import { Survey } from "@/lib/get-data";
+function findUserByNick(users: Survey[], nickname: string) {
+  return users.find(
+    (user) => user.discordNick === nickname || user.inGameNick === nickname
+  );
+}
 
 const colors = [
   "-red-700",
@@ -74,12 +79,8 @@ const Item = ({
   const t = useTranslations("BuildTeam");
   const users_list = users.map((user) => user.inGameNick);
   const [user, setUser] = useState<Survey | undefined>();
-  const user_artillery = getArtyAmount(user?.artyAmount, t);
-  function findUserByNick(nickname: string) {
-    return users.find(
-      (user) => user.discordNick === nickname || user.inGameNick === nickname
-    );
-  }
+  const user_artillery = useArtyAmount(user?.artyAmount);
+
   const leadership = useMemo(() => {
     const unit1_leadership = units.find(
       (unit) => unit.name === data.unit1
@@ -95,9 +96,9 @@ const Item = ({
       (unit2_leadership ? unit2_leadership : 0) +
       (unit3_leadership ? unit3_leadership : 0)
     );
-  }, [data.unit1, data.unit2, data.unit3]);
+  }, [data.unit1, data.unit2, data.unit3, units]);
   useEffect(() => {
-    setUser(findUserByNick(data.username));
+    setUser(findUserByNick(users, data.username));
   }, [data.username]);
 
   function mapUnitsByEra(
@@ -149,6 +150,7 @@ const Item = ({
                 >
                   <img
                     src={weapon.src}
+                    alt={weapon.name}
                     className={clsx("rounded-full h-5 shadow-md", {
                       "shadow-yellow-500": user.weapons[index].pref === 1,
                       "shadow-purple-500": user.weapons[index].pref === 2,

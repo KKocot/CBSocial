@@ -21,8 +21,9 @@ import TemplateMenu from "@/components/templates-menu";
 import UnitsFilter from "@/components/units-filter";
 import RaidsFilter from "@/components/raids-filter";
 import StorageTemplate from "@/components/storage-template";
-import { useRolesContext } from "@/components/providers/globalData";
 import { Survey } from "@/lib/get-data";
+import { useQuery } from "@tanstack/react-query";
+import { rolesQueryOptions } from "@/queries/roles.query";
 
 const next_tw = getCloserDay();
 
@@ -86,7 +87,8 @@ const Page: React.FC = () => {
     other_checked: true,
     meta_units_only: true,
   });
-  const command_list = useRolesContext();
+  const { data: command_list = [] } = useQuery(rolesQueryOptions());
+
   const commander_house =
     commander && commander.user.id
       ? command_list.find((e) => e.discordId === commander.user.id)

@@ -3,7 +3,8 @@
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { UserProfile } from "@/components/user-profile";
-import { getRoles, getSurveys, Survey } from "@/lib/get-data";
+import { getSurveys, Survey } from "@/lib/get-data";
+import { rolesQueryOptions } from "@/queries/roles.query";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { useSession } from "next-auth/react";
@@ -15,10 +16,9 @@ const MyHousePage = () => {
   const { data: commander } = useSession();
   const [inputQuery, setInputQuery] = useState<string>("");
 
-  const { data: rolesData, isLoading: rolesIsLoading } = useQuery({
-    queryKey: ["rolesList"],
-    queryFn: getRoles,
-  });
+  const { data: rolesData, isLoading: rolesIsLoading } = useQuery(
+    rolesQueryOptions()
+  );
   const house =
     rolesData?.find((e) => e.discordId === commander?.user.id)?.house || "";
 
